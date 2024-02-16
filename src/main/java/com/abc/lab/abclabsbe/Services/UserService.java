@@ -35,9 +35,7 @@ public class UserService {
     newUser.setRole("User");
     newUser.setCreatedAt(new Date());
 
-    User registeredUser = userRepository.insert(newUser);
-
-    return registeredUser;
+    return userRepository.insert(newUser);
   }
 
   public Optional<User> findById(String id) {

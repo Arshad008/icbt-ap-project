@@ -11,32 +11,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document(collection = "users")
+@Document(collection = "staffs")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class User {
-    @Id
-    private String id;
+public class Staff {
+  @Id
+  private String id;
 
-    private String firstName;
+  private String name;
 
-    private String lastName;
+  private String email;
 
-    private String dateOfBirth;
+  private String phoneNumber;
 
-    private String gender;
+  private String password;
 
-    private String email;
+  private Date createdAt;
 
-    private String phoneNumber;
-
-    private String password;
-
-    private String address;
-
-    private Date createdAt;
-
-    private String role;
+  private String role;
 }
