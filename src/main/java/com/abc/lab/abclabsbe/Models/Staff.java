@@ -31,4 +31,8 @@ public class Staff {
   private Date createdAt;
 
   private String role;
+
+  private String subRole;
+
+  private String status;
 }
