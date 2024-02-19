@@ -1,9 +1,10 @@
 package com.abc.lab.abclabsbe.Models;
 
-import java.util.List;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -11,22 +12,28 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Document(collection = "appointments")
 @Data
-@Document(collection = "tests")
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Test {
+public class Appointment {
   @Id
   private String id;
 
-  private String name;
+  @DocumentReference
+  private User user;
 
-  private String description;
+  @DocumentReference
+  private Test test;
 
-  private Double price;
+  private Date createdAt;
+
+  private Date requestedDate;
 
   private String status;
 
-  private List<String> testLabels;
+  private Number number;
+
+  private Date appointmentDate;
 }

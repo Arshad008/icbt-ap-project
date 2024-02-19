@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import com.abc.lab.abclabsbe.Dtos.tests.CreateTestDto;
 import com.abc.lab.abclabsbe.Models.Test;
 import com.abc.lab.abclabsbe.Repositories.TestRepository;
 
@@ -21,14 +22,14 @@ public class TestService {
   @Autowired
   private MongoTemplate mongoTemplate;
 
-  public Test creaTest(Test reqData) {
+  public Test createTest(CreateTestDto reqData) {
     Test test = new Test();
 
     test.setName(reqData.getName());
     test.setDescription(reqData.getDescription());
     test.setPrice(reqData.getPrice());
     test.setStatus("Active");
-    test.setTestData(reqData.getTestData());
+    test.setTestLabels(reqData.getTestLabels());
 
     return testRepository.insert(test);
   }

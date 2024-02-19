@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.abc.lab.abclabsbe.Dtos.tests.CreateTestDto;
 import com.abc.lab.abclabsbe.Models.Test;
 import com.abc.lab.abclabsbe.Services.TestService;
 
@@ -26,8 +27,8 @@ public class TestController {
   private TestService testService;
 
   @PostMapping
-  public ResponseEntity<Test> createTest(@RequestBody Test test) {
-    return new ResponseEntity<Test>(testService.creaTest(test), HttpStatus.OK);
+  public ResponseEntity<Test> createTest(@RequestBody CreateTestDto test) {
+    return new ResponseEntity<Test>(testService.createTest(test), HttpStatus.OK);
   }
 
   @GetMapping
