@@ -36,4 +36,6 @@ public class Appointment {
   private Long number;
 
   private Date appointmentDate;
+
+  private String doctorName;
 }

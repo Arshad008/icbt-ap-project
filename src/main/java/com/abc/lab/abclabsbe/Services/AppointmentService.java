@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -96,7 +97,23 @@ public class AppointmentService {
     }
   }
 
+  public Appointment updateAppointmentDoctor(String id, String doctorName) {
+    Query query = new Query(Criteria.where("_id").is(id));
+    Update update = new Update().set("doctorName", doctorName);
+    FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
+
+    return mongoTemplate.findAndModify(query, update, options, Appointment.class);
+  }
+
   public Optional<Appointment> getAppointmentByNumber(Long number) {
     return appointmentRepository.findByNumber(number);
+  }
+
+  public Appointment updateStatus(String id, String status) {
+    Query query = new Query(Criteria.where("_id").is(id));
+    Update update = new Update().set("status", status);
+    FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
+
+    return mongoTemplate.findAndModify(query, update, options, Appointment.class);
   }
 }

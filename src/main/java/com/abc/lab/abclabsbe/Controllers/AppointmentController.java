@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,8 +38,8 @@ public class AppointmentController {
 
   @GetMapping("/{appointmentNumber}")
   public ResponseEntity<Optional<Appointment>> getAppointmentById(@PathVariable Long appointmentNumber) {
-    System.out.println(appointmentNumber);
-    return new ResponseEntity<Optional<Appointment>>(appointmentService.getAppointmentByNumber(appointmentNumber), HttpStatus.OK);
+    return new ResponseEntity<Optional<Appointment>>(appointmentService.getAppointmentByNumber(appointmentNumber),
+        HttpStatus.OK);
   }
 
   @PostMapping
@@ -80,5 +81,21 @@ public class AppointmentController {
     String id = payload.get("id");
 
     return new ResponseEntity<Object>(appointmentService.confirmAppointment(id, dateString), HttpStatus.OK);
+  }
+
+  @PutMapping("/admin/updateDoctor")
+  public ResponseEntity<Appointment> updateAppointmentDoctor(@RequestBody Map<String, String> payload) {
+    String id = payload.get("id");
+    String doctorName = payload.get("doctorName");
+
+    return new ResponseEntity<Appointment>(appointmentService.updateAppointmentDoctor(id, doctorName), HttpStatus.OK);
+  }
+
+  @PutMapping("/admin/updateStatus")
+  public ResponseEntity<Appointment> updateAppointmentStatus(@RequestBody Map<String, String> payload) {
+    String id = payload.get("id");
+    String status = payload.get("status");
+
+    return new ResponseEntity<Appointment>(appointmentService.updateStatus(id, status), HttpStatus.OK);
   }
 }
