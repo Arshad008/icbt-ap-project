@@ -33,7 +33,7 @@ public class Appointment {
 
   private String status;
 
-  private Number number;
+  private Long number;
 
   private Date appointmentDate;
 }

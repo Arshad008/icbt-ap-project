@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -33,7 +34,7 @@ public class AppointmentService {
       SimpleDateFormat requestedDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
       Date date = requestedDateFormatter.parse(requestedDateString);
 
-      Number totalAppointmentsCount = appointmentRepository.count() + 1;
+      Long totalAppointmentsCount = appointmentRepository.count() + 1;
 
       appointment.setCreatedAt(new Date());
       appointment.setRequestedDate(date);
@@ -93,5 +94,9 @@ public class AppointmentService {
     } catch (Exception e) {
       return new Object();
     }
+  }
+
+  public Optional<Appointment> getAppointmentByNumber(Long number) {
+    return appointmentRepository.findByNumber(number);
   }
 }

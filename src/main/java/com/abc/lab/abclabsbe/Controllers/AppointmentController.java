@@ -35,6 +35,12 @@ public class AppointmentController {
   @Autowired
   private TestRepository testRepository;
 
+  @GetMapping("/{appointmentNumber}")
+  public ResponseEntity<Optional<Appointment>> getAppointmentById(@PathVariable Long appointmentNumber) {
+    System.out.println(appointmentNumber);
+    return new ResponseEntity<Optional<Appointment>>(appointmentService.getAppointmentByNumber(appointmentNumber), HttpStatus.OK);
+  }
+
   @PostMapping
   public ResponseEntity<Object> createAppointment(@RequestBody Map<String, String> payload) {
     String date = payload.get("date");
@@ -54,9 +60,11 @@ public class AppointmentController {
     return new ResponseEntity<Object>(new Object(), HttpStatus.OK);
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<List<Appointment>> getAppointmentsForUser(@PathVariable String id) {
-    return new ResponseEntity<List<Appointment>>(appointmentService.getAppointmentsForUser(id), HttpStatus.OK);
+  @PostMapping("/user/list")
+  public ResponseEntity<List<Appointment>> getAppointmentsForUser(@RequestBody Map<String, String> payload) {
+    String userId = payload.get("userId");
+
+    return new ResponseEntity<List<Appointment>>(appointmentService.getAppointmentsForUser(userId), HttpStatus.OK);
   }
 
   @PostMapping("/admin/list")
