@@ -1,4 +1,4 @@
-package com.abc.lab.abclabsbe.Dtos.tests;
+package com.abc.lab.abclabsbe.Dtos;
 
 import java.util.List;
 

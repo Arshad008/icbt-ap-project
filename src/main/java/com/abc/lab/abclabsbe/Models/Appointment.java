@@ -1,6 +1,7 @@
 package com.abc.lab.abclabsbe.Models;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -38,4 +39,6 @@ public class Appointment {
   private Date appointmentDate;
 
   private String doctorName;
+
+  private List<Object> testData;
 }

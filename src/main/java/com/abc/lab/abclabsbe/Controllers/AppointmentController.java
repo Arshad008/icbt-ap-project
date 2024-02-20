@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.abc.lab.abclabsbe.Dtos.UpdateAppointmentTestDataDto;
 import com.abc.lab.abclabsbe.Models.Appointment;
 import com.abc.lab.abclabsbe.Models.Test;
 import com.abc.lab.abclabsbe.Models.User;
@@ -97,5 +98,14 @@ public class AppointmentController {
     String status = payload.get("status");
 
     return new ResponseEntity<Appointment>(appointmentService.updateStatus(id, status), HttpStatus.OK);
+  }
+
+  @PutMapping("/admin/confirmResult")
+  public ResponseEntity<Appointment> confirmResult(
+      @RequestBody UpdateAppointmentTestDataDto appointmentTestDataDto) {
+    String id = appointmentTestDataDto.getId();
+    List<Object> testData = appointmentTestDataDto.getTestData();
+
+    return new ResponseEntity<Appointment>(appointmentService.confirmResult(id, testData), HttpStatus.OK);
   }
 }

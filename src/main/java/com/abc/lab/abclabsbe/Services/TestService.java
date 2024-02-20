@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import com.abc.lab.abclabsbe.Dtos.tests.CreateTestDto;
+import com.abc.lab.abclabsbe.Dtos.CreateTestDto;
 import com.abc.lab.abclabsbe.Models.Test;
 import com.abc.lab.abclabsbe.Repositories.TestRepository;
 

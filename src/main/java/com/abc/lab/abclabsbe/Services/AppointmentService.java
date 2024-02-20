@@ -116,4 +116,12 @@ public class AppointmentService {
 
     return mongoTemplate.findAndModify(query, update, options, Appointment.class);
   }
+
+  public Appointment confirmResult(String id, List<Object> testData) {
+    Query query = new Query(Criteria.where("_id").is(id));
+    Update update = new Update().set("testData", testData);
+    FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
+
+    return mongoTemplate.findAndModify(query, update, options, Appointment.class);
+  }
 }
