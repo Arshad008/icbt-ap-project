@@ -29,13 +29,24 @@ public class AppointmentService {
   @Autowired
   private MongoTemplate mongoTemplate;
 
+  @Autowired
+  private MailService mailService;
+
   public Object bookAppointment(String requestedDateString, Test test, User user) {
     try {
       Appointment appointment = new Appointment();
       SimpleDateFormat requestedDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
       Date date = requestedDateFormatter.parse(requestedDateString);
-
       Long totalAppointmentsCount = appointmentRepository.count() + 1;
+      String mailSubject = "Appointment booked successfully";
+
+      String mailBody = "Hello " + user.getFirstName() + ",\n\n";
+      mailBody += "You appointment for test " + test.getName() + " has been booked successfully. please find the appointment details below.\n\n";
+      mailBody += "Appointment Number: " + totalAppointmentsCount.toString() + "\n";
+      mailBody += "Test Name: " + test.getName() + "\n";
+      mailBody += "Test Price: LKR " + test.getPrice().toString() + "\n\n";
+      mailBody += "You will receive the appointment date & time shortly.\n\n";
+      mailBody += "Thank you!.";
 
       appointment.setCreatedAt(new Date());
       appointment.setRequestedDate(date);
@@ -44,7 +55,11 @@ public class AppointmentService {
       appointment.setTest(test);
       appointment.setUser(user);
 
-      return appointmentRepository.insert(appointment);
+      Appointment result = appointmentRepository.insert(appointment);
+
+      mailService.sendMail(user.getEmail(), mailSubject, mailBody);
+
+      return result;
     } catch (ParseException e) {
       return new Object();
     }
