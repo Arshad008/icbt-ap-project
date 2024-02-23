@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,7 +115,8 @@ public class AppointmentService {
       String mailSubject = "Appointment Approved";
       String mailBody = "Hello " + user.getFirstName() + ",\n\n";
       mailBody += "You appointment date has been approved.\n\n";
-      mailBody += "Please visit our lab on " + new SimpleDateFormat("yyyy-MM-dd hh:mm a").format(date) + " in order to provide the sample. Thank you!!";
+      mailBody += "Please visit our lab on " + new SimpleDateFormat("yyyy-MM-dd hh:mm a").format(date)
+          + " in order to provide the sample. Thank you!!";
 
       mailService.sendMail(user.getEmail(), mailSubject, mailBody);
 
@@ -145,10 +147,56 @@ public class AppointmentService {
   }
 
   public Appointment updateTestData(String id, List<Object> testData) {
+    Optional<Appointment> appointment = appointmentRepository.findById(id);
     Query query = new Query(Criteria.where("_id").is(id));
     Update update = new Update().set("testData", testData);
     FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
 
-    return mongoTemplate.findAndModify(query, update, options, Appointment.class);
+    Appointment result = mongoTemplate.findAndModify(query, update, options, Appointment.class);
+
+    if (appointment.isPresent()) {
+      Appointment actualAppointment = appointment.get();
+
+      List<Object> appointmentTestData = actualAppointment.getTestData();
+
+      if (appointmentTestData == null) {
+        User user = result.getUser();
+
+        String mailSubject = "You test results are ready.";
+
+        String mailBody = "Hello " + user.getFirstName() + ",\n\n";
+
+        mailBody += "Please find the test result for the appointment number (" + result.getNumber().toString()
+            + ") below.\n\n";
+
+        for (Object obj : testData) {
+          String testItem = "";
+
+          if (obj instanceof Map) {
+            Map<?, ?> map = (Map<?, ?>) obj;
+            Integer index = 0;
+
+            for (Map.Entry<?, ?> entry : map.entrySet()) {
+              Object value = entry.getValue();
+
+              testItem += value;
+              if (index == 0) {
+                testItem += ": ";
+              }
+
+              index++;
+            }
+          }
+
+          mailBody += testItem + "\n";
+        }
+
+        mailBody += "\nPlease visit our lab to collect the test results. Thank you!";
+
+        mailService.sendMail(user.getEmail(), mailSubject, mailBody);
+      }
+    }
+
+    return result;
   }
 }
