@@ -41,7 +41,8 @@ public class AppointmentService {
       String mailSubject = "Appointment booked successfully";
 
       String mailBody = "Hello " + user.getFirstName() + ",\n\n";
-      mailBody += "You appointment for test " + test.getName() + " has been booked successfully. please find the appointment details below.\n\n";
+      mailBody += "You appointment for test " + test.getName()
+          + " has been booked successfully. please find the appointment details below.\n\n";
       mailBody += "Appointment Number: " + totalAppointmentsCount.toString() + "\n";
       mailBody += "Test Name: " + test.getName() + "\n";
       mailBody += "Test Price: LKR " + test.getPrice().toString() + "\n\n";
@@ -105,8 +106,19 @@ public class AppointmentService {
 
       Query query = new Query(Criteria.where("_id").is(id));
       Update update = new Update().set("status", "Confirmed").set("appointmentDate", date);
+      FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
 
-      return mongoTemplate.findAndModify(query, update, Appointment.class);
+      Appointment result = mongoTemplate.findAndModify(query, update, options, Appointment.class);
+      User user = result.getUser();
+
+      String mailSubject = "Appointment Approved";
+      String mailBody = "Hello " + user.getFirstName() + ",\n\n";
+      mailBody += "You appointment date has been approved.\n\n";
+      mailBody += "Please visit our lab on " + new SimpleDateFormat("yyyy-MM-dd hh:mm a").format(date) + " in order to provide the sample. Thank you!!";
+
+      mailService.sendMail(user.getEmail(), mailSubject, mailBody);
+
+      return result;
     } catch (Exception e) {
       return new Object();
     }
