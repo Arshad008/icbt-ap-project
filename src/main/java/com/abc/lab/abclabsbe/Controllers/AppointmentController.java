@@ -100,12 +100,12 @@ public class AppointmentController {
     return new ResponseEntity<Appointment>(appointmentService.updateStatus(id, status), HttpStatus.OK);
   }
 
-  @PutMapping("/admin/confirmResult")
-  public ResponseEntity<Appointment> confirmResult(
+  @PutMapping("/admin/updateTestData")
+  public ResponseEntity<Appointment> updateTestData(
       @RequestBody UpdateAppointmentTestDataDto appointmentTestDataDto) {
     String id = appointmentTestDataDto.getId();
     List<Object> testData = appointmentTestDataDto.getTestData();
 
-    return new ResponseEntity<Appointment>(appointmentService.confirmResult(id, testData), HttpStatus.OK);
+    return new ResponseEntity<Appointment>(appointmentService.updateTestData(id, testData), HttpStatus.OK);
   }
 }
