@@ -72,8 +72,8 @@ public class StaffService {
   public Staff initStaff() {
     Staff newStaff = new Staff();
 
-    newStaff.setName("Arshad Staff");
-    newStaff.setEmail("arshad@abc.com");
+    newStaff.setName("System Admin");
+    newStaff.setEmail("admin@abc.com");
     newStaff.setPhoneNumber("0771673400");
     newStaff.setPassword("1234QWER");
     newStaff.setRole("Staff");
