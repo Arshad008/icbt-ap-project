@@ -108,4 +108,12 @@ public class AppointmentController {
 
     return new ResponseEntity<Appointment>(appointmentService.updateTestData(id, testData), HttpStatus.OK);
   }
+
+  @PostMapping("/admin/getReportData")
+  public ResponseEntity<List<Appointment>> getReportData(@RequestBody Map<String, String> payload) {
+    String start = payload.get("start");
+    String end = payload.get("end");
+
+    return new ResponseEntity<List<Appointment>>(appointmentService.getReportData(start, end), HttpStatus.OK);
+  }
 }

@@ -149,7 +149,7 @@ public class AppointmentService {
   public Appointment updateTestData(String id, List<Object> testData) {
     Optional<Appointment> appointment = appointmentRepository.findById(id);
     Query query = new Query(Criteria.where("_id").is(id));
-    Update update = new Update().set("testData", testData);
+    Update update = new Update().set("testData", testData).set("status", "Completed");
     FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
 
     Appointment result = mongoTemplate.findAndModify(query, update, options, Appointment.class);
@@ -198,5 +198,20 @@ public class AppointmentService {
     }
 
     return result;
+  }
+
+  public List<Appointment> getReportData(String start, String end) {
+    try {
+      SimpleDateFormat requestedDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+      Date startOfDay = requestedDateFormatter.parse(start);
+      Date endOfDay = requestedDateFormatter.parse(end);
+
+      Query query = new Query(
+          Criteria.where("createdAt").gte(startOfDay).lte(endOfDay));
+
+      return mongoTemplate.find(query, Appointment.class);
+    } catch (Exception e) {
+      return new ArrayList<>();
+    }
   }
 }
