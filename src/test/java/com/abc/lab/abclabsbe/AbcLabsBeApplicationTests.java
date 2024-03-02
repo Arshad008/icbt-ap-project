@@ -144,4 +144,46 @@ class AbcLabsBeApplicationTests {
 			System.out.println(err);
 		}
 	}
+	
+	@Test
+	void upateTestResultTest() {
+		try {
+			System.out.println("Update test result test: started");
+
+			TestData testDataOne = new TestData();
+			testDataOne.setLabel("Less than 5.7%");
+			testDataOne.setValue("5");
+
+
+			List<Object> testDataList = new ArrayList<Object>();
+
+			appointmentService.updateTestData("65e2dcfd679ae576011dd580", testDataList);
+
+			System.out.println("Update test result test: passed");
+		} catch (Exception err) {
+			System.out.println("Update test result test: failed");
+			System.out.println(err);
+		}
+	}
+}
+
+class TestData {
+	private String label;
+	private String value;
+
+	public String getLabel() {
+		return this.label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public String getValue() {
+		return this.value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
 }
